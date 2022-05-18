@@ -1,30 +1,32 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class EjemploParse {
-    public static void main(String args[]) {
-        String cadenaJSON =
-                "{ \"pageInfo\": { \"pageName\": \"Homepage\", \"logo\": \"https://www.example.com/logo.jpg\"}, " +
-                  "\"posts\":"+
-                    "[" +
-                        "{" +
-                            " \"post_id\": \"0123456789\", " +
-                            " \"actor_id\": \"1001\", " +
-                            " \"author_name\": \"Jane Doe\" , " +
-                            " \"post_title\": \"How to parse JSON in Java\", " +
-                            " \"comments\": [{\"comment\":\"Muy Bueno\"},{\"comment\":\"Bueno, mas o menos\"}], " +
-                            " \"time_of_post\": \"1234567890\" " +
-                        "}," +
-                        "{" +
-                            " \"post_id\": \"AAASSSS789\", " +
-                            " \"actor_id\": \"1001\", " +
-                            " \"author_name\": \"Jane Doe\" , " +
-                            " \"post_title\": \"How to parse JSON in Java\", " +
-                            " \"comments\": [{\"comment\":\"GENIAL!!!!!\"},{\"comment\":\"ERES UN CRACK!\"}], " +
-                            " \"time_of_post\": \"1234567890\" " +
-                        "}" +
-                  "]" +
-                "}";
+    public static void main(String args[]) throws URISyntaxException, IOException, InterruptedException {
+
+        // creamos la petición
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("https://jsonplaceholder.typicode.com/todos/1"))
+                .GET()
+                .build();
+
+        // creamos el cliente
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Enviamos la petición y obtenemos la respuesta
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Mostramos el cuerpo de la respuesta
+        System.out.println(response.body());
+
+        /*String cadenaJSON = "";
         JSONObject obj = new JSONObject(cadenaJSON);
 
         String vivo = obj.getJSONObject("pageInfo").getString("pageName");
@@ -35,6 +37,6 @@ public class EjemploParse {
             System.out.println(post_id);
         }
 
-        System.out.println(vivo);
+        System.out.println(vivo);*/
     }
 }
